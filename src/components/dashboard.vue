@@ -1,24 +1,6 @@
 <template>
   <div>
     <div>
-      <div class="row">
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-          <div class="q-py-md">
-            <q-input 
-              v-model="newTaskAdded"
-              outlined dense
-              @keyup.enter="addTodo"
-            />
-          </div>
-          <div class="q-py-md">
-            <q-btn label="add me" color="orange" @click="addTodo" />
-          </div>
-
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-      </div>
-
 
       <div class="row q-pt-lg">
         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
@@ -27,7 +9,20 @@
           <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 col-block">
               <div class="card-container-tasks">
-                <div class="text-h6" align="center">Tasks</div>
+
+                <div style="display:flex;justify-content: space-between;">
+                  <div class="text-h6">Tasks</div>
+                  <div class="q-pa-xs">
+                    <q-btn
+                      label="add task"
+                      color="red"
+                      @click="medium = true"
+                      dense
+                      size="sm"
+                    />
+                  </div>
+                </div>
+
                 <q-scroll-area
                   :thumb-style="thumbStyle"
                   :bar-style="barStyle"
@@ -49,6 +44,7 @@
                   </draggable>
 
                 </q-scroll-area>
+                
               </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 col-block">
@@ -128,6 +124,42 @@
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
       </div>
+
+      <q-dialog
+        v-model="medium"
+      >
+        <q-card style="width: 700px; max-width: 80vw;">
+          <q-card-section class="row items-center q-pb-none">
+            <div class="text-h6">Add a new Task</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+
+          <q-card-section>
+            <q-form @submit.prevent="addTodo">
+              <q-input 
+                type="textarea"
+                filled
+                v-model="newTaskAdded"
+                outlined dense
+                @keyup.enter="addTodo"
+                :rules="[ val => val && val.length > 0 || 'Please enter Task Details']"
+                ref="newTaskAdded"
+              />
+              <div class="q-py-md" style="text-align:center;">
+                <q-btn 
+                  label="Add new Task"
+                  no-caps 
+                  dense 
+                  color="red"
+                  type="submit"
+                />
+              </div>
+            </q-form>
+          </q-card-section>
+
+        </q-card>
+      </q-dialog>
      
     </div>
   </div>
@@ -143,20 +175,6 @@ export default {
   },
   data() {
     return{
-      newTaskAdded: "",
-      todoTasks: [
-        { name: "Code Sign Up Page" },
-        { name: "Test Dashboard" },
-        { name: "Style Registration" },
-        { name: "Help with Designs" },
-      ],
-      inProgress: [
-        { name: "Testing Up Page" }
-      ],
-      inReview: [{ name: "Testing Up Page" }],
-      completed:[{name: "Testing Completed"}],
-
-
       thumbStyle: {
         right: '0px',
         borderRadius: '5px',
@@ -171,14 +189,29 @@ export default {
         width: '9px',
         opacity: 0.2
       },
+      medium: false,
+      newTaskAdded: "",
+      todoTasks: [
+        { name: "Code Sign Up Page" },
+        { name: "Test Dashboard" },
+        { name: "Style Registration" },
+        { name: "Help with Designs" },
+      ],
+      inProgress: [
+        { name: "Testing Up Page" }
+      ],
+      inReview: [{ name: "Testing Up Page" }],
+      completed:[{name: "Testing Completed"}],
+
     }
   },
             
   methods: {
     addTodo() {
       if (this.newTaskAdded) {
-        this.todoTask.push({ name: this.newTaskAdded });
+        this.todoTasks.push({ name: this.newTaskAdded });
         this.newTaskAdded = "";
+        this.medium = false
       }
     }
   }

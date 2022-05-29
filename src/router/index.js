@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import userCard from '../components/userCard.vue';
+import dashboard from '../components/dashboard.vue';
 
 
 
@@ -12,12 +12,12 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    redirect: { name: 'userCard' },
+    redirect: { name: 'dashboard' },
     children: [
       {
-        path: '/userCard',
-        name: 'userCard',
-        component: userCard,
+        path: '/dashboard',
+        name: 'dashboard',
+        component: dashboard,
       },
     ]
   },
