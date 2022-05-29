@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-// import userCard from '../components/userCard.vue';
+import userCard from '../components/userCard.vue';
+
 
 
 Vue.use(VueRouter)
@@ -11,13 +12,13 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    // redirect: { name: 'userCard' },
+    redirect: { name: 'userCard' },
     children: [
-      // {
-      //   path: '/userCard',
-      //   name: 'userCard',
-      //   component: userCard,
-      // },
+      {
+        path: '/userCard',
+        name: 'userCard',
+        component: userCard,
+      },
     ]
   },
   {
