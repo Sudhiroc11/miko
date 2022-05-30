@@ -1,14 +1,11 @@
 <template>
   <div>
-
     <div class="row q-pt-lg">
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
       <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-        
         <div class="row">
           <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 col-block">
             <div class="card-container-tasks">
-
               <div style="display:flex;justify-content: space-between;">
                 <div class="text-h6">Tasks</div>
                 <div class="q-pa-xs">
@@ -34,16 +31,28 @@
                 >
                   <div
                     class="list-group-item-pc"
-                    v-for="todoTask in todoTasks"
-                    :key="todoTask.name"
+                    v-for="(todoTask,index) in todoTasks" :key="todoTask.name"
                   >
-                    {{ todoTask.name }}
+                    <div class="row">
+                      <div class="col-10">
+                       {{ todoTask.name }}
+                      </div>
+                      <div class="col-2">
+                        <div>
+                        <q-btn
+                          color="grey"
+                          icon="edit"
+                          size="xs"
+                          outline
+                          flat
+                          @click="editTaskDialogeMethod(index,todoTask.name)"
+                        />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-
                 </draggable>
-
               </q-scroll-area>
-              
             </div>
           </div>
           <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 col-block">
@@ -119,11 +128,9 @@
             </div>
           </div>
         </div>
-
       </div>
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
     </div>
-
     <q-dialog
       v-model="medium"
       transition-show="rotate"
@@ -161,7 +168,42 @@
 
       </q-card>
     </q-dialog>
-    
+    <q-dialog
+      v-model="editTaskDialoge"
+      transition-show="rotate"
+      transition-hide="rotate"
+    >
+      <q-card style="width: 700px; max-width: 80vw;">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">Edit Task</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          <q-form @submit.prevent="updateTodo">
+            <q-input 
+              type="textarea"
+              filled
+              v-model="newTaskAdded"
+              outlined dense
+              @keyup.enter="updateTodo"
+              :rules="[ val => val && val.length > 0 || 'Please enter Task Details']"
+              ref="newTaskAdded"
+            />
+            <div class="q-py-md" style="text-align:center;">
+              <q-btn 
+                label="Update"
+                no-caps 
+                dense 
+                color="red"
+                type="submit"
+              />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -196,14 +238,13 @@ export default {
         opacity: 0.2
       },
       medium: false,
+      editTaskDialoge:false,
       newTaskAdded: "",
       todoTasks: [],
-      
       inProgress: [],
       inReview: [],
       completed: [],
-     
-     
+      selectedIndex: null
     }
   },
             
@@ -216,10 +257,18 @@ export default {
         localStorage.setItem("NEW_TASK_ADDED", JSON.stringify(this.todoTasks));
       }
     },
-   
+    editTaskDialogeMethod(indexValue,todoTask){
+      this.editTaskDialoge = true
+      this.newTaskAdded = todoTask
+      this.selectedIndex = indexValue
+    },
+    updateTodo() {
+      this.todoTasks.splice(this.selectedIndex, 1, this.newTaskAdded)
+      this.todoTasks.push({ name: this.newTaskAdded });
+      this.newTaskAdded = ''
+      this.editTaskDialoge = false
+    },
   }
-
-  
 }
 </script>
 
