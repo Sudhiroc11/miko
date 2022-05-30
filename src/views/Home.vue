@@ -8,7 +8,7 @@
             <div class="q-pa-md">
               <img src="../assets/miko-logo.svg">
             </div>
-            <div style="color:black;">
+            <div class="text-h6" style="color:black;">
               Trello dashboard
             </div>
             <q-space />
