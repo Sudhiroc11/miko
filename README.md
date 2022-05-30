@@ -1,4 +1,4 @@
-# aspire
+# MIKO
 
 ## Project setup
 ```
